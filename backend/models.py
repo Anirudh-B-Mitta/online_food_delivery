@@ -23,7 +23,7 @@ class restaurants(models.Model):
     REST_ID = models.OneToOneField(User,on_delete=models.CASCADE, primary_key=True)
     REST_NAME = models.CharField(max_length=50)
     REST_PH = models.CharField(max_length=10)
-    REST_ADD = models.TextField()
+    REST_ADD = models.CharField(max_length=30)
     LOGO = models.ImageField()
     COMMISSION = models.IntegerField(default=50)
     NON_VEG = models.BooleanField(default=False)
