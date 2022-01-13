@@ -65,7 +65,7 @@ class bill(models.Model):
     STATUS = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.FROM
+        return self.FROM.REST_NAME+" to "+self.TO.CUST_NAME
 
 class order(models.Model):
     BILL = models.ForeignKey(bill,on_delete=CASCADE)
