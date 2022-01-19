@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import restaurants,customers
+from .models import restaurants,customers,menu
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
 
@@ -24,15 +24,8 @@ def jobs(request):
 def stories(request):
     return render(request,'stories.html')
 
-def details(request,u_id):
-    user=customers.objects.get(pk=u_id)
-    return render(request,'details.html',{'u':user})
-
-def register(request):
+def details(request):
     if request.method=='POST':
-        user_name = request.POST['username']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
         cust_name = request.POST['name']
         cust_ph = request.POST['ph']
         cust_mail = request.POST['mail']
@@ -42,6 +35,17 @@ def register(request):
         cust_loc = request.POST['loc']
         cust_city = request.POST['city']
         cust_pin = request.POST['pin']
+        cust = customers.objects.create(CUST_ID_id=request.user.id,CUST_NAME=cust_name,CUST_PH=cust_ph,CUST_MAIL=cust_mail,CUST_GEN=cust_gen,CUST_DNUM=cust_dnum,CUST_SNUM=cust_snum,CUST_LOC=cust_loc,CUST_CITY=cust_city,CUST_PIN=cust_pin)
+        cust.save()
+        return redirect('index')
+    else:
+        return render(request,'details.html')
+
+def register(request):
+    if request.method=='POST':
+        user_name = request.POST['username']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
         if password1==password2:
             if User.objects.filter(username=user_name).exists():
                 messages.info(request,'Username Taken')
@@ -49,13 +53,38 @@ def register(request):
             else:
                 user = User.objects.create_user(username=user_name,password=password1)
                 user.save()
-                cust = customers.objects.create(CUST_NAME=cust_name,CUST_PH=cust_ph,CUST_MAIL=cust_mail,CUST_GEN=cust_gen,CUST_DNUM=cust_dnum,CUST_SNUM=cust_snum,CUST_LOC=cust_loc,CUST_CITY=cust_city,CUST_PIN=cust_pin)
-                isinstance.cust
-                cust.save()
-                return redirect('details', user.id)
+                return redirect('details')
         else:
             messages.info(request,'Passwords not Matching')
             return render(request,'register.html')
 
     else:
         return render(request, 'register.html')
+
+def menu_(request,rid):
+    menu_list=menu.objects.all()
+    if request.method == 'POST':
+        dish=request.POST['dish']
+        cart=request.session.get('cart')
+        if cart:
+            if cart.get(dish):
+                cart[dish]=cart.get(dish)+1
+            else:
+                cart[dish]=1
+        else:
+            cart={}
+            cart[dish]=1
+        print(cart)
+        request.session['cart']=cart
+
+    elif request.method == 'GET':
+        request.session['cart']={}
+
+    rest=restaurants.objects.get(pk=rid)
+    return render(request,'menu.html',{'menu_list':menu_list,'rest':rest})
+
+def billing(request,ord):
+    total=0
+    for cost in ord.values():
+        total+=int(cost)
+    return render(request,'billing.html',{'total':total,'ord':ord})

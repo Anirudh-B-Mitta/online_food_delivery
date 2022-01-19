@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} menu {% endblock %}
+
+{% block content %}
+
+<h1>{{rest.REST_NAME}}</h1>
+<h6>{{rest.REST_ADD}}</h6>
+<br/>
+<br/>
+{% for m in menu_list %}
+{% if m.REST_ID_id is rest.REST_ID_id %}
+<div class="d-flex justify-content-between">
+<div class="d-flex flex-row bd-highlight mb-3">
+    <div class="p-2 bd-highlight"><img src="{{m.IMG.url}}" width="175" height="175"></div>
+    <div class="p-2 bd-highlight">
+        <h3>{{m.NAME}}</h3>
+        <p>{{m.DESC}}</p>
+        {% if m.NON_VEG %}
+        <img src="{% static 'img/nonveg.jpg' %}" width="20" height="20" alt="non-veg">
+        {% else %}
+        <img src="{% static 'img/veg.jpg' %}" width="20" height="20" alt="veg">
+        {% endif %}
+        <br/>
+        <br/>
+        <h6>Price: ₹{{m.RATE}}</h6>
+    </div>
+</div>
+<div class="p-2 bd-highlight">
+    <form action="/menu/{{rest.REST_ID_id}}" method="POST">
+        {% csrf_token %}
+        <input type="text" value="{{m.id}}" name="dish" hidden>
+        <input type="submit" class="float-right btn btn-light border btn-sm" value="Add to eat">
+    <!--<input type="number" name='qty{{m.id}}' onKeyDown="return false" min='0' max='10' value='0'>-->
+    </form>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+<form method="post">
+    {% csrf_token %}
+    <input hidden="True" type="number" name="rest_id" value="{{rest.REST_ID_id}}">
+    <div align='right'>
+    <button type="submit" class="btn btn-secondary">Proceed</button>
+    </div>
+</form>
+
+{% endblock %}
