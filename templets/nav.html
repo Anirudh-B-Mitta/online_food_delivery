@@ -13,9 +13,11 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'restaurents' %}">Restaurants</a>
         </li>
+        {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Orders</a>
+          <a class="nav-link" href="{% url 'Myorders' %}">My Orders</a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'about_us' %}">About Us</a>
         </li>
@@ -27,12 +29,19 @@
             <li><a class="dropdown-item" href="{% url 'partner' %}">Partner with us</a></li>
             <li><a class="dropdown-item" href="{% url 'job' %}">Job Oppertunities</a></li>
             <li><a class="dropdown-item" href="{% url 'stories' %}">Stories</a></li>
+            <li><a class="dropdown-item" href="{% url 'Menu_list' %}">Restaurant works</a></li>
+            <li><a class="dropdown-item" href="{% url 'order_list_del' %}">Delivery Employee</a></li>
           </ul>
         </li>
       </ul>
       <form class="d-flex">
-        <a href="#" class="btn btn-outline-success" type="button">Login</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" class="btn btn-outline-danger" type="button">Logout</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-success" type="button">Login</a>
+        <p>. . . . .</p>
         <a href="{% url 'register' %}" class="btn btn-outline-primary" type="button">Register</a>
+        {% endif %}
       </form>
     </div>
   </div>

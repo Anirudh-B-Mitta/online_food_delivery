@@ -19,6 +19,9 @@ class customers(models.Model):
     def __str__(self):
         return self.CUST_NAME
 
+    def pk(self):
+        return self.CUST_ID.id
+
 class restaurants(models.Model):
     REST_ID = models.OneToOneField(User,on_delete=models.CASCADE, primary_key=True)
     REST_NAME = models.CharField(max_length=50)
@@ -30,6 +33,9 @@ class restaurants(models.Model):
 
     def __str__(self):
         return self.REST_NAME
+
+    def pk(self):
+        return self.REST_ID.id
 
 class delivery_guy(models.Model):
     DEL_ID = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -43,6 +49,9 @@ class delivery_guy(models.Model):
     def __str__ (self):
         return self.DEL_NAME
 
+    def pk(self):
+        return self.DEL_ID.id
+
 class menu(models.Model):
     NAME = models.CharField(max_length=50)
     IMG = models.ImageField()
@@ -55,6 +64,10 @@ class menu(models.Model):
 
     def __str__(self):
         return self.NAME
+
+    @staticmethod
+    def get_dishes_by_id(ids):
+        return menu.objects.filter(id__in=ids)
 
 class bill(models.Model):
     FROM = models.ForeignKey(restaurants,blank=True,on_delete=SET_NULL,null=True)

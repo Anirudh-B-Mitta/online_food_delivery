@@ -5,6 +5,9 @@
 {% block title %} restaurents {% endblock %}
 
 {% block content %}
+{% if user.id not in cust %}
+    <h1>You are not authorised</h1>
+    {% else %}
 <h1>Our Restaurents</h1>
 <section>
     <div class="container">
@@ -35,7 +38,11 @@
     <div class="p-2 bd-highlight"></div>
     <div class="p-2 bd-highlight"></div>
     <div class="p-2 bd-highlight">
-    <a href="{% url 'menu' res.REST_ID_id %}" type="button" class="btn btn-outline-dark ">Order</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'menu' res.REST_ID_id %}" type="button" class="btn btn-outline-dark ">Order</a>
+        {% else %}
+            <a href="{% url 'login' %}" type="button" class="btn btn-outline-dark ">Order</a>
+        {% endif %}
     </div>
     </div>
     </div>
@@ -45,4 +52,5 @@
     </div>
     </div>
     </section>
+    {% endif %}
 {% endblock %}

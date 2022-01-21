@@ -16,7 +16,11 @@
             <br/>
             <p class="fs-5">Check out all our restaurents and order from wherever you wish and whatever you wish. At the comfort of your home. We "HOME DELIVERY" will get it to you.</p>
             <br/>
+            {% if user.is_authenticated %}
             <a href="{% url 'restaurents' %}" type="button" class="btn btn-danger">Let's Eat</a>
+            {% else %}
+            <a href="{% url 'login' %}" type="button" class="btn btn-danger">Let's Eat</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

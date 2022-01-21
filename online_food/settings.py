@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'online_delivery',
         'HOST': 'localhost',
         'USER': 'root',
-        'PASSWORD': 'mitta1474',
+        'PASSWORD': '',
         'PORT': '3306',
     }
 }
